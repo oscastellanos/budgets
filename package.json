@@ -1,0 +1,17 @@
+{
+  "name": "budget",
+  "version": "1.0.0",
+  "description": "A web application to help with financial budgeting.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Osvaldo Castellanos",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^2.6.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.5.12"
+  }
+}
