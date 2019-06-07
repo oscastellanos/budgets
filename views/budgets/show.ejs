@@ -1,0 +1,30 @@
+<% include ../partials/header %>
+<h1 style="text-align: center"><%=budget.name%></h1>
+
+<div class="container">
+    <p>
+        <a class="btn btn-xs btn-warning" href="/budgets/<%= budget._id %>/edit">Edit</a>
+        <form id="delete-form" action="/budgets/<%= budget._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-xs btn-danger">Delete</button>
+        </form>
+        <li>
+            <strong>Income: </strong><%= budget.income %>
+        </li>
+        <li>
+            <strong>Costs: </strong><%= budget.costs %>
+        </li>
+        <li>
+            <strong>Profit: </strong><%= budget.profit %>
+        </li>
+    </p>
+    <h2 style="text-align: center">Bills</h2>
+    <a class="btn btn-xs btn-success" href='/budgets/<%=budget._id%>/bills/new'>Add New Bill</a> 
+    <% budget.bills.forEach((bill) => { %>
+        <p>
+            <strong><%= bill.name %></strong> - <%= bill.amount%>
+        </p>
+    <% }); %>
+</div>
+
+<% include ../partials/footer %>
+
