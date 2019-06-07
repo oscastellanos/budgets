@@ -37,6 +37,19 @@ router.post("/", (req, res) => {
     });
 });
 
+// EDIT
+router.get("/:comment_id/edit", (err, res) => {
+    res.send("This should be the edit route.");
+});
+
+
+// UPDATE
+
+
+
+// DESTROY
+
+
 //middleware
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
