@@ -9,7 +9,7 @@ router.get("/", (req, res) => res.render('landing'));
 
 // show register form
 router.get("/register", (req, res) => {
-    res.render("register");
+    res.render("register", {page: "register"});
 });
 
 // handle sign-up logic
@@ -17,8 +17,7 @@ router.post("/register", (req, res) => {
     const newUser = new User({username: req.body.username});
     User.register(newUser, req.body.password, (err, user)=>{
         if(err){
-            console.log(err);
-            return res.render("register");
+            return res.render("register", {"error":err.message});
         } 
         passport.authenticate("local")(req, res, () => {
             res.redirect("/budgets");
@@ -29,7 +28,7 @@ router.post("/register", (req, res) => {
 
 // show login form
 router.get("/login", (req, res)=>{
-    res.render("login");
+    res.render("login", {page:'login'});
 });
 
 //handle login logic
@@ -43,15 +42,8 @@ router.post("/login", passport.authenticate("local",
 // logout route
 router.get("/logout", (req, res) => {
     req.logout();
+    req.flash("success", "You are logged out.");
     res.redirect("/budgets");
 });
-
-//middleware
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
 
 module.exports = router;

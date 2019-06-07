@@ -1,10 +1,11 @@
-var     express = require("express"),
-        router = express.Router({mergeParams: true}),
-        Budget = require("../models/budgets"),
-        Bill = require("../models/bill");
+var     express    = require("express"),
+        router     = express.Router({mergeParams: true}),
+        Budget     = require("../models/budgets"),
+        Bill       = require("../models/bill"),
+        middleware = require("../middleware");
 
 // NEW
-router.get("/new", isLoggedIn, (req, res) => {
+router.get("/new", middleware.isLoggedIn, (req, res) => {
     Budget.findById(req.params.id, (err, budget) => {
         if(err){
             console.log(err);
@@ -15,8 +16,8 @@ router.get("/new", isLoggedIn, (req, res) => {
 });
 
 // CREATE
-router.post("/", (req, res) => {
-    Budget.findById(req.params.id, isLoggedIn, (err, budget) => {
+router.post("/",  middleware.isLoggedIn, (req, res) => {
+    Budget.findById(req.params.id,(err, budget) => {
         if(err){
             console.log(err);
             res.redirect("/budgets");
@@ -48,14 +49,5 @@ router.get("/:comment_id/edit", (err, res) => {
 
 
 // DESTROY
-
-
-//middleware
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
 
 module.exports = router;
