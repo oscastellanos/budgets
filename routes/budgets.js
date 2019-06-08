@@ -1,6 +1,7 @@
 var express    = require("express"),
     router     = express.Router({mergeParams: true}),
     Budget     = require("../models/budgets"),
+    User       = require("../models/user");
     middleware = require("../middleware");
 
 // INDEX - SHOW ALL BUDGETS
@@ -12,8 +13,8 @@ router.get("/", (req, res) => {
             res.render("budgets/index", {budgets: allBudgets, currentUser: req.user, page: "budgets"})
         }
     });
-    //res.render('budgets', {budgets: budgets});
 });
+
 
 // CREATE - add a new budget to DB
 router.post("/", (req, res) => {
