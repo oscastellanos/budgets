@@ -19,25 +19,18 @@ const billRoutes     = require("./routes/bills"),
       revenueRoutes  = require("./routes/revenues");
 
 const PORT = process.env.PORT;
+// const PORT = 3000;
 
-mongoose.connect("mongodb://localhost/budget", {useNewUrlParser: true});
-const url = process.env.MONGODB_URI //|| "mongodb://localhost/budget"
+// mongoose.connect(, {useNewUrlParser: true});
+// const url = process.env.MONGODB_URI || "mongodb://localhost/budget"
 
-console.log(url)
-// try {
-//     assert.ok(typeof process.env.MONGODB_URI === 'string')
-//   } catch(e) {
-//     console.error("process.env.MONGODB_URI isn't set correctly")
-//     process.exit(1)
-//   }
-
-// mongoose.connect(url, {
-//     useNewUrlParser: true
-// }).then(() => {
-//     console.log("Connected to DB!");
-// }).catch(err => {
-//     console.log("ERROR:", err.message);
-// });
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true
+}).then(() => {
+    console.log("Connected to DB!");
+}).catch(err => {
+    console.log("ERROR:", err.message);
+});
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
