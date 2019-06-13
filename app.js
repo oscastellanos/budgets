@@ -30,7 +30,7 @@ mongoose.connect(url, {
 }).catch(err => {
     console.log("ERROR:", err.message);
 });
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -65,4 +65,4 @@ app.use("/dashboard", dashRoutes);
 app.use("/dashboard/:id/revenues", revenueRoutes);
 
 
-app.listen(port, process.env.IP, () => console.log(`The Budget Server is listening on port ${port}!`));
+app.listen(process.env.PORT, process.env.IP, () => console.log(`The Budget Server is listening on port ${port}!`));

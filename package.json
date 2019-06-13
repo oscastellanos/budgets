@@ -1,6 +1,6 @@
 {
   "name": "budget",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "A web application to help with financial budgeting.",
   "main": "app.js",
   "scripts": {
