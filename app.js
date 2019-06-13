@@ -20,7 +20,16 @@ const billRoutes     = require("./routes/bills"),
 
 
 
-mongoose.connect("mongodb://localhost/budget", {useNewUrlParser: true});
+//mongoose.connect("mongodb://localhost/budget", {useNewUrlParser: true});
+const url = process.env.DATABASEURL || "mongodb://localhost/budget"
+mongoose.connect(url, {
+    useNewUrlParser: true,
+    useCreateIndex: true
+}).then(() => {
+    console.log("Connected to DB!");
+}).catch(err => {
+    console.log("ERROR:", err.message);
+});
 const port = 3000;
 
 app.use(express.static("public"));
@@ -56,4 +65,4 @@ app.use("/dashboard", dashRoutes);
 app.use("/dashboard/:id/revenues", revenueRoutes);
 
 
-app.listen(port, () => console.log(`The Budget Server is listening on port ${port}!`));
+app.listen(port, process.env.IP, () => console.log(`The Budget Server is listening on port ${port}!`));
