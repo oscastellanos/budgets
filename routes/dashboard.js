@@ -1,47 +1,58 @@
 var express    = require("express"),
     router     = express.Router({mergeParams: true}),
     Budget     = require("../models/budgets"),
-    User       = require("../models/user");
+    User       = require("../models/user"),
+    Bill       = require('../models/bill'),
+    Revenue    = require("../models/revenues"),
     middleware = require("../middleware");
 
-// INDEX - SHOW ALL BUDGETS
-router.get("/", (req, res) => {
-    Budget.find({}, (err, allBudgets) => {
+// INDEX - SHOW THE DASHBOARD FOR ALL DATA
+router.get("/", middleware.isLoggedIn, (req, res) => {
+    User.findById(req.user).populate("revenues").exec((err, allRevenues) => {
         if(err){
             console.log(err);
         } else {
-            res.render("budgets/index", {budgets: allBudgets, currentUser: req.user, page: "budgets"})
+            User.findById(req.user).populate("bills").exec((err, allBills) => {
+                if(err){
+                    console.log(err);
+                } else {
+                    // console.log(allBills);
+                    res.render("dashboard/index", {currentUser: req.user, allBills: allBills, allRevenues: allRevenues}) 
+                }
+            });
         }
     });
+   
 });
+
 
 
 // CREATE - add a new budget to DB
-router.post("/", (req, res) => {
-    const name =  req.body.name;
-    const income = req.body.income;
-    const creator = {
-        id: req.user._id,
-        username: req.user.username
-    }
-    const newBudget = {name: name, income: income, creator: creator};
-    Budget.create(newBudget, (err, newlyCreated) => {
-        if(err){
-            console.log(err);
-        } else {
-            res.redirect("/budgets");
-        }
-    });
-});
+// router.post("/", (req, res) => {
+//     const name =  req.body.name;
+//     const income = req.body.income;
+//     const creator = {
+//         id: req.user._id,
+//         username: req.user.username
+//     }
+//     const newBudget = {name: name, income: income, creator: creator};
+//     Budget.create(newBudget, (err, newlyCreated) => {
+//         if(err){
+//             console.log(err);
+//         } else {
+//             res.redirect("/budgets");
+//         }
+//     });
+// });
 
-// CREATE -- add a budget to a user's account
+// CREATE -- add a bill to a user's account
 router.post("/",  middleware.isLoggedIn, (req, res) => {
     User.findById(req.params.id,(err, foundUser) => {
         if(err || !foundUser){
             req.flash("error", "User not found.")
-            res.redirect("/budgets");
+            res.redirect("/dashboard");
         } else {
-            Budget.create(req.body.budget, (err, budget) => {
+            Bill.create(req.body.budget, (err, budget) => {
                 if(err){
                     console.log(err);
                 } else {
@@ -80,7 +91,6 @@ router.get("/:id", middleware.isLoggedIn, (req, res) => {
             req.flash("error", "Budget not found.")
             res.redirect("/budgets");
         } else {
-            console.log(foundBudget);
             res.render("budgets/show", {budget: foundBudget});
         }
     });

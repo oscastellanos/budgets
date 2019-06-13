@@ -1,0 +1,26 @@
+<% include ../partials/header %>
+
+<div class="row">
+    <h1 style="text-align: center">Edit Bill</h1>
+    <div style="width: 30%; margin: 25px auto;">
+        <form action="/dashboard/<%= currentUser_id %>/bills/<%= bill._id %>?_method=PUT" method="POST">
+            <div class="form-group">
+                <input class="form-control" type="text" name="bill[name]" value="<%= bill.name %>">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="number" name="bill[amount]" value="<%= bill.amount%>">    
+            </div>
+            <div class="form-group">
+                    <input class="form-control" type="text" name="bill[category]" value="<%= bill.category%>">    
+            </div>
+            <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block">Submit!</button>
+            </div>
+        </form>
+        <a href='/dashboard'>View your dashboard!</a> 
+    </div>
+    
+</div>
+
+
+<% include ../partials/footer %>

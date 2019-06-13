@@ -20,7 +20,7 @@ router.post("/register", (req, res) => {
             return res.render("register", {"error":err.message});
         } 
         passport.authenticate("local")(req, res, () => {
-            res.redirect("/budgets");
+            res.redirect("/dashboard");
         });
         
     });
@@ -34,7 +34,7 @@ router.get("/login", (req, res)=>{
 //handle login logic
 router.post("/login", passport.authenticate("local", 
     {
-        successRedirect: "/budgets",
+        successRedirect: "/dashboard",
         failureRedirect: "/login" 
     }),(req, res) => {
 });
@@ -43,7 +43,7 @@ router.post("/login", passport.authenticate("local",
 router.get("/logout", (req, res) => {
     req.logout();
     req.flash("success", "You are logged out.");
-    res.redirect("/budgets");
+    res.redirect("/");
 });
 
 module.exports = router;

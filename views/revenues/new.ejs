@@ -1,17 +1,17 @@
 <% include ../partials/header %>
 
 <div class="row">
-    <h1 style="text-align: center">Create a New Bill for <%= currentUser.username %>s Budget</h1>
+    <h1 style="text-align: center">Create a New Revenue Stream for <%= currentUser.username %></h1>
     <div style="width: 30%; margin: 25px auto;">
-        <form action="/dashboard/<%= currentUser._id %>/bills" method="POST">
+        <form action="/dashboard/<%= currentUser._id %>/revenues" method="POST">
             <div class="form-group">
-                <input class="form-control" type="text" name="bill[name]" placeholder="name">
+                <input class="form-control" type="text" name="revenue[name]" placeholder="name">
             </div>
             <div class="form-group">
-                <input class="form-control" type="number" name="bill[amount]" placeholder="amount">    
+                <input class="form-control" type="number" name="revenue[amount]" placeholder="amount">    
             </div>
             <div class="form-group">
-                    <input class="form-control" type="text" name="bill[category]" placeholder="category">    
+                    <input class="form-control" type="text" name="revenue[category]" placeholder="category">    
             </div>
             <div class="form-group">
                 <button class="btn btn-lg btn-primary btn-block">Submit!</button>

@@ -1,6 +1,6 @@
 var     express    = require("express"),
         router     = express.Router({mergeParams: true}),
-        Budget     = require("../models/budgets"),
+        Revenue    = require("../models/revenues"),
         Bill       = require("../models/bill"),
         User       = require("../models/user"),
         middleware = require("../middleware");
@@ -12,7 +12,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
     //        console.log(err);
     //    } else {
             console.log(req.user);
-            res.render("bills/new", {currentUser: req.user});
+            res.render("revenues/new", {currentUser: req.user});
      //   }
     //});
 });
@@ -22,14 +22,14 @@ router.post("/",  middleware.isLoggedIn, (req, res) => {
     var currentUser = req.user;
     console.log(currentUser);
     
-    Bill.create(req.body.bill, (err, bill) => {
+    Revenue.create(req.body.revenue, (err, revenue) => {
         if(err){
             console.log(err);
         } else {
-            bill.creator.id = currentUser._id;
-            bill.creator.username = currentUser.username;
-            bill.save();
-            currentUser.bills.push(bill);
+            revenue.creator.id = currentUser._id;
+            revenue.creator.username = currentUser.username;
+            revenue.save();
+            currentUser.revenues.push(revenue);
             currentUser.save();
             res.redirect("/dashboard");
         }
@@ -37,23 +37,23 @@ router.post("/",  middleware.isLoggedIn, (req, res) => {
        
 });
 
-
 // EDIT 
-router.get("/:bill_id/edit", (req, res) => {
-    Bill.findById(req.params.bill_id, (err, foundBill) => {
+router.get("/:revenue_id/edit", (req, res) => {
+    Revenue.findById(req.params.revenue_id, (err, foundRevenue) =>{
         if(err){
             res.redirect("back");
         } else {
-            res.render("bills/edit", {currentUser_id: req.params.id, bill: foundBill});
+            res.render("revenues/edit", {currentUser_id: req.params.id, revenue: foundRevenue});
         }
     });
 });
 
 // UPDATE 
-router.put("/:bill_id", (req, res) => {
-    Bill.findByIdAndUpdate(req.params.bill_id, req.body.bill, (err, updatedBill) => {
+router.put("/:revenue_id", (req, res) => {
+    Bill.findByIdAndUpdate(req.params.revenue_id, req.body.revenue, (err, updatedRevenue) => {
         if(err){
-            res.redirect("back");
+            req.flash("error", "Something did not post correctly.");
+            res.redirect("/dashboard");
         } else {
             res.redirect("/dashboard");
         }
@@ -62,8 +62,8 @@ router.put("/:bill_id", (req, res) => {
 
 
 // DESTROY
-router.delete("/:bill_id", (req, res) => {
-    Bill.findByIdAndRemove(req.params.bill_id, (err) => {
+router.delete("/:revenue_id", (req, res) => {
+    Revenue.findByIdAndRemove(req.params.revenue_id, (err) => {
         if(err){
             res.redirect("/dashboard");
         } else {
@@ -78,24 +78,24 @@ router.get("/map", middleware.isLoggedIn, (req, res) => {
         if(err){
             console.log(err);
         } else {
-            User.findById(req.user).populate("bills").exec((err, allBills) => {
+            User.findById(req.user).populate("revenues").exec((err, allRevs) => {
                 if(err){
                     console.log(err);
                 } else {
                     data = []
-                    billCategories = []
-                    billTotal = 0 
-                    billsMap = {} 
-                    allBills.bills.forEach((bill) => {
-                        billTotal = billTotal + bill.amount 
-                        billCategories.push(bill.category); 
-                        if(billsMap.hasOwnProperty(bill.category)) { 
-                            billsMap[bill.category]++;
+                    revenueCategories = []
+                    revenueTotal = 0 
+                    revenuesMap = {} 
+                    allRevs.revenues.forEach((rev) => {
+                        revenueTotal = revenueTotal + rev.amount 
+                        revenueCategories.push(rev.category); 
+                        if(revenuesMap.hasOwnProperty(rev.category)) { 
+                            revenuesMap[rev.category]++;
                         } else {
-                            billsMap[bill.category] = 1;
+                            revenuesMap[rev.category] = 1;
                         }});
                     
-                    res.send(billsMap);
+                    res.send(revenuesMap);
                 }
             });
         }

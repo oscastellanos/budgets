@@ -7,14 +7,16 @@ const express        = require("express"),
       Budget         = require("./models/budgets"),
       Bill           = require("./models/bill"),
       passport       = require("passport"),
-      flash         = require("connect-flash"),
+      flash          = require("connect-flash"),
       LocalStrategy  = require("passport-local"),
       methodOverride = require("method-override"),
       User           = require("./models/user");
 
 const billRoutes     = require("./routes/bills"),
       budgetRoutes   = require("./routes/budgets"),
-      authRoutes     = require("./routes/index");
+      authRoutes     = require("./routes/index"),
+      dashRoutes     = require("./routes/dashboard"),
+      revenueRoutes  = require("./routes/revenues");
 
 
 
@@ -27,7 +29,6 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.use(flash());
-//seedDB();
 
 // PASSPORT CONFIGURATION
 app.use(require("express-session")({
@@ -47,10 +48,12 @@ app.use((req, res, next) => {
     res.locals.success = req.flash("success")
     next();
 });
-
+app.use(express.static(__dirname + '/public/stylesheets'));
 app.use(authRoutes);
 app.use("/budgets", budgetRoutes);
-app.use("/budgets/:id/bills", billRoutes);
+app.use("/dashboard/:id/bills", billRoutes);
+app.use("/dashboard", dashRoutes);
+app.use("/dashboard/:id/revenues", revenueRoutes);
 
 
 app.listen(port, () => console.log(`The Budget Server is listening on port ${port}!`));

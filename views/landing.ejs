@@ -23,7 +23,7 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                   <ul class="nav navbar-nav">
-                    <li class="<%= typeof page !== 'undefined' && page === 'budgets' ? 'active' : '' %>"><a href="/budgets">Home</a></li>
+                    <li class="<%= typeof page !== 'undefined' && page === 'budgets' ? 'active' : '' %>"><a href="/dashboard">Home</a></li>
                   </ul>
                   <ul class="nav navbar-nav navbar-right">
                       <% if(!currentUser){ %>
@@ -56,7 +56,7 @@
     <div class="hero-content-area">
         <h1>Welcome to Budgets</h1>
         <h3>A platform to help you account your expenses and plan to achieve your financial goals.</h3>
-        <a class="btn btn-primary" href='/budgets'>Get started now!</a> 
+        <a class="btn btn-primary" href='/dashboard'>Get started now!</a> 
     </div>
 </section>
 

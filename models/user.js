@@ -13,7 +13,13 @@ const userSchema = new mongoose.Schema({
     bills: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Budget"
+            ref: "Bill"
+        }
+    ], 
+    revenues: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Revenue"
         }
     ]
 });
