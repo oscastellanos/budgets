@@ -18,19 +18,26 @@ const billRoutes     = require("./routes/bills"),
       dashRoutes     = require("./routes/dashboard"),
       revenueRoutes  = require("./routes/revenues");
 
+const PORT = process.env.PORT;
 
+mongoose.connect("mongodb://localhost/budget", {useNewUrlParser: true});
+const url = process.env.MONGODB_URI //|| "mongodb://localhost/budget"
 
-//mongoose.connect("mongodb://localhost/budget", {useNewUrlParser: true});
-const url = process.env.DATABASEURL || "mongodb://localhost/budget"
-mongoose.connect(url, {
-    useNewUrlParser: true,
-    useCreateIndex: true
-}).then(() => {
-    console.log("Connected to DB!");
-}).catch(err => {
-    console.log("ERROR:", err.message);
-});
-const port = process.env.PORT || 3000;
+console.log(url)
+// try {
+//     assert.ok(typeof process.env.MONGODB_URI === 'string')
+//   } catch(e) {
+//     console.error("process.env.MONGODB_URI isn't set correctly")
+//     process.exit(1)
+//   }
+
+// mongoose.connect(url, {
+//     useNewUrlParser: true
+// }).then(() => {
+//     console.log("Connected to DB!");
+// }).catch(err => {
+//     console.log("ERROR:", err.message);
+// });
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -65,4 +72,4 @@ app.use("/dashboard", dashRoutes);
 app.use("/dashboard/:id/revenues", revenueRoutes);
 
 
-app.listen(process.env.PORT, process.env.IP, () => console.log(`The Budget Server is listening on port ${port}!`));
+app.listen(PORT, process.env.IP, () => console.log(`The Budget Server is listening on port ${PORT}!`));
